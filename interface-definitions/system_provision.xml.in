@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interfaceDefinition>
+  <node name="system">
+    <children>
+      <node name="provisioning" owner="${vyos_conf_scripts_dir}/system_provision.py">
+        <properties>
+          <help>Auto-provisioning setup</help>
+          <priority>8888</priority>
+        </properties>
+        <children>
+          <leafNode name="enabled">
+            <properties>
+              <help>Enable provisioning system</help>
+              <valueless/>
+            </properties>
+          </leafNode>
+          <leafNode name="setup-key">
+            <properties>
+              <help>Setup key</help>
+              <constraint>
+                <validator name="uuid"/>
+              </constraint>
+            </properties>
+          </leafNode>
+          <leafNode name="mode">
+            <properties>
+              <help>Provisioning mode</help>
+              <completionHelp>hybrid pull push</completionHelp>
+              <valueHelp>
+                <format>hybrid</format>
+                <description>Provisions periodically via pull based syncing, but allow for remote push</description>
+              </valueHelp>
+              <valueHelp>
+                <format>pull</format>
+                <description>Only provisions via periodic pull based</description>
+              </valueHelp>
+              <valueHelp>
+                <format>push</format>
+                <description>Only provisions via remote provisioner push</description>
+              </valueHelp>
+              <constraint>
+                <regex>(hybrid|pull|push)</regex>
+              </constraint>
+            </properties>
+          </leafNode>
+          <leafNode name="remote-url">
+            <properties>
+              <help>Remote URL</help>
+              <valueHelp>
+                <format>url</format>
+                <description>Remote HTTP(S) URL</description>
+              </valueHelp>
+              <constraint>
+                <validator name="url" argument="--scheme http --scheme https"/>
+              </constraint>
+              <constraintErrorMessage>Invalid HTTP(S) URL format</constraintErrorMessage>
+            </properties>
+            <defaultValue>https://ecn-provisioner.snowie.tech</defaultValue>
+          </leafNode>
+        </children>
+      </node>
+    </children>
+  </node>
+</interfaceDefinition>
